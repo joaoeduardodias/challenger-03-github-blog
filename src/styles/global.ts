@@ -1,8 +1,8 @@
 import { createGlobalStyle } from 'styled-components'
 
-export const GlobalTheme = createGlobalStyle`
+export const GlobalStyles = createGlobalStyle`
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -19,17 +19,21 @@ export const GlobalTheme = createGlobalStyle`
       border-radius: 999px;
     }
 }
-
-
-body: {
-  background: ${(props) => props.theme.colors['base-background']};
-  color: ${({ theme }) => theme.colors['base-text']};
-  -webkit-font-smoothing: antialiased;
+:focus {
+  outline: 0;
+  box-shadow: 0 0 0 2px ${({ theme }) => theme.colors['brand-blue']};
 }
 
  body, input, textarea, button {
-  font: 400 1rem Nunito,sans-serif
- } 
+  font: 400 ${({ theme }) => theme.textSizes['text-text-m']} Nunito,sans-serif;
+  line-height: 160%;
+ }  
+
+ body {
+  background-color: ${(props) => props.theme.colors['base-background']};
+  color: ${({ theme }) => theme.colors['base-text']};
+  -webkit-font-smoothing: antialiased;
+}
 
 ul {
   list-style: none;
