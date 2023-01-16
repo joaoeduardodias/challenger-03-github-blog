@@ -8,6 +8,8 @@ export const LinkContainer = styled.a`
   font-size: ${({ theme }) => theme.textSizes['components-link']};
   font-weight: 700;
 
+  color: ${({ theme }) => theme.colors['brand-blue']};
+
   svg {
     width: 0.7031rem;
     height: 0.7031rem;
