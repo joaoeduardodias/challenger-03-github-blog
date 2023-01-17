@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 export const BlogContainer = styled.div`
   section {
+    margin-bottom: 3rem;
     header {
       display: flex;
       align-items: flex-end;
@@ -16,3 +17,4 @@ export const BlogContainer = styled.div`
     }
   }
 `
+export const ListPosts = styled.ul``

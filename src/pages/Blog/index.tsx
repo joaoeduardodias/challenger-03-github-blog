@@ -1,6 +1,7 @@
 import { Info } from '../../components/Info'
+import { Post } from './components/Post'
 import { SearchInput } from './components/SearchInput'
-import { BlogContainer } from './styles'
+import { BlogContainer, ListPosts } from './styles'
 
 export function Blog() {
   return (
@@ -24,18 +25,13 @@ export function Blog() {
         </header>
         <SearchInput />
       </section>
-      <ul>
-        <li>
-          <strong>JavaScript data types and data structures</strong>
-          <span>há 1 dia</span>
-          <p>
-            Programming languages all have built-in data structures, but these
-            often differ from one language to another. This article attempts to
-            list the built-in data structures available in JavaScript and what
-            properties they have.
-          </p>
-        </li>
-      </ul>
+      <ListPosts>
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+      </ListPosts>
     </BlogContainer>
   )
 }
