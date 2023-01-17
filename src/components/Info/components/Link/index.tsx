@@ -1,5 +1,5 @@
 import { FaExternalLinkAlt } from 'react-icons/fa'
-import { LinkContainer } from './styles'
+import { LinkContainer, LinkContent } from './styles'
 
 interface LinkProps {
   link: string
@@ -8,9 +8,11 @@ interface LinkProps {
 
 export function Link({ link, title }: LinkProps) {
   return (
-    <LinkContainer href={link} target="_blank">
-      {title}
-      <FaExternalLinkAlt />
+    <LinkContainer>
+      <LinkContent href={link} target="_blank">
+        {title}
+        <FaExternalLinkAlt />
+      </LinkContent>
     </LinkContainer>
   )
 }
