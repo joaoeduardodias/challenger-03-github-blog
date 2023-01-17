@@ -17,4 +17,10 @@ export const BlogContainer = styled.div`
     }
   }
 `
-export const ListPosts = styled.ul``
+export const ListPosts = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-gap: 2rem;
+
+  margin-bottom: 3rem;
+`

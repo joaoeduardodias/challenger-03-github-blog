@@ -6,10 +6,14 @@ export const PostContainer = styled.li`
   padding: 2rem;
 
   background: ${({ theme }) => theme.colors['base-post']};
+  border: 2px solid ${({ theme }) => theme.colors['base-post']};
+
   border-radius: 10px;
+  cursor: pointer;
 
   div {
     display: flex;
+    margin: 0 auto;
     justify-content: space-between;
     align-items: flex-start;
     gap: 1rem;
@@ -24,5 +28,10 @@ export const PostContainer = styled.li`
       font-size: ${({ theme }) => theme.textSizes['text-text-s']};
       color: ${({ theme }) => theme.colors['base-span']};
     }
+  }
+
+  &:hover {
+    border: 2px solid ${({ theme }) => theme.colors['base-label']};
+    transition: border 0.2s;
   }
 `
