@@ -1,4 +1,4 @@
-import { FaExternalLinkAlt } from 'react-icons/fa'
+import { FaChevronLeft, FaExternalLinkAlt } from 'react-icons/fa'
 import { LinkContainer, LinkContent } from './styles'
 
 interface LinkProps {
@@ -10,8 +10,17 @@ export function Link({ link, title }: LinkProps) {
   return (
     <LinkContainer>
       <LinkContent href={link} target="_blank">
-        {title}
-        <FaExternalLinkAlt />
+        {link === '/' ? (
+          <>
+            <FaChevronLeft />
+            {title}
+          </>
+        ) : (
+          <>
+            {title}
+            <FaExternalLinkAlt />
+          </>
+        )}
       </LinkContent>
     </LinkContainer>
   )

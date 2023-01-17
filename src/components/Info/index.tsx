@@ -5,8 +5,15 @@ import {
   FaGithub,
   FaUserFriends,
 } from 'react-icons/fa'
+import { CompareDateToNow } from '../../utils/formatter'
 import { Link } from './components/Link'
-import { InfoContainer, ListInfos, TitleContainer } from './styles'
+import {
+  ListInfos,
+  RepoInfoContainer,
+  RepoTitleContainer,
+  TitleContainer,
+  UserInfoContainer,
+} from './styles'
 
 interface InfoProps {
   type: 'userInfo' | 'repoInfo'
@@ -18,7 +25,7 @@ interface InfoProps {
   company?: string
   followers?: number
   createdAt?: string
-  comments?: string
+  comments?: number
   repoLink?: string
 }
 
@@ -35,56 +42,54 @@ export function Info({
   linkUserGit,
   repoLink,
 }: InfoProps) {
-  return (
-    <InfoContainer>
-      {type === 'userInfo' ? (
-        <>
-          <img src={imgProfile} />
-          <div>
-            <TitleContainer>
-              <strong>{title}</strong>
-              {linkUserGit && <Link link={linkUserGit} title="github" />}
-            </TitleContainer>
-            {description && <p>{description}</p>}
-            <ListInfos>
-              <li>
-                <FaGithub />
-                {userGit}
-              </li>
-              <li>
-                <FaBuilding />
-                {userGit}
-              </li>
-              <li>
-                <FaUserFriends />
-                {userGit}
-              </li>
-            </ListInfos>
-          </div>
-        </>
-      ) : (
-        <>
-          <TitleContainer>
-            <Link link="/" title="voltar" />
-            {repoLink && <Link link={repoLink} title="ver no github" />}
-            <strong>{title}</strong>
-          </TitleContainer>
-          <ListInfos>
-            <li>
-              <FaGithub />
-              {userGit}
-            </li>
-            <li>
-              <FaCalendarDay />
-              {createdAt}
-            </li>
-            <li>
-              <FaComment />
-              {comments}
-            </li>
-          </ListInfos>
-        </>
-      )}
-    </InfoContainer>
+  return type === 'userInfo' ? (
+    <UserInfoContainer>
+      <img src={imgProfile} />
+      <div>
+        <TitleContainer>
+          <strong>{title}</strong>
+          {linkUserGit && <Link link={linkUserGit} title="github" />}
+        </TitleContainer>
+        {description && <p>{description}</p>}
+        <ListInfos>
+          <li>
+            <FaGithub />
+            {userGit}
+          </li>
+          <li>
+            <FaBuilding />
+            {company}
+          </li>
+          <li>
+            <FaUserFriends />
+            {`${followers} seguidores`}
+          </li>
+        </ListInfos>
+      </div>
+    </UserInfoContainer>
+  ) : (
+    <RepoInfoContainer>
+      <RepoTitleContainer>
+        <div>
+          <Link link="/" title="voltar" />
+          {repoLink && <Link link={repoLink} title="ver no github" />}
+        </div>
+        <strong>{title}</strong>
+      </RepoTitleContainer>
+      <ListInfos>
+        <li>
+          <FaGithub />
+          {userGit}
+        </li>
+        <li>
+          <FaCalendarDay />
+          {createdAt && CompareDateToNow(createdAt)}
+        </li>
+        <li>
+          <FaComment />
+          {`${comments} comentários`}
+        </li>
+      </ListInfos>
+    </RepoInfoContainer>
   )
 }
