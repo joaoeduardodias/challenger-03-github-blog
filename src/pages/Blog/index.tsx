@@ -1,14 +1,37 @@
+import { useCallback, useEffect, useState } from 'react'
 import { Info } from '../../components/Info'
+import { api } from '../../services/api'
 import { Post } from './components/Post'
 import { SearchInput } from './components/SearchInput'
 import { BlogContainer, ListPosts } from './styles'
 
+interface UserProps {
+  name: string
+  login: string
+  bio: string
+  avatar_url: string
+  company: string
+  followers: number
+  html_url: string
+}
+
 export function Blog() {
+  const [user, setUser] = useState<UserProps>({} as UserProps)
+
+  const getUser = useCallback(async () => {
+    const response = await api.get<UserProps>('/users/joaoeduardodias')
+    setUser(response.data)
+  }, [])
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
   return (
     <BlogContainer>
       <Info
         type="userInfo"
-        title="Cameron Williamson"
+        title={user.name}
         description="Tristique voluteai
          pulvinar vel massa, pellentesque egestas. Eu viverra massa quam 
          digníssima Aeneas malassada usucapia. Nunc, voluta pulvinar vel mass."
