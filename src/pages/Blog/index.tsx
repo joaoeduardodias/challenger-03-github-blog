@@ -64,14 +64,12 @@ export function Blog() {
         type="userInfo"
         isLoading={isLoading}
         title={user.name}
-        description="Tristique voluteai
-         pulvinar vel massa, pellentesque egestas. Eu viverra massa quam 
-         digníssima Aeneas malassada usucapia. Nunc, voluta pulvinar vel mass."
-        imgProfile="https://avatars.githubusercontent.com/u/49342574?v=4"
-        userGit="joaoeduardodias"
-        company="Rocketseat"
-        followers={32}
-        linkUserGit="https://github.com/joaoeduardodias"
+        description={user.bio}
+        imgProfile={user.avatar_url}
+        userGit={user.login}
+        company={user.company}
+        followers={user.followers}
+        linkUserGit={user.html_url}
       />
 
       <section>
