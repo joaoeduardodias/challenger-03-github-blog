@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Info } from '../../components/Info'
+import { usePosts } from '../../hooks/usePosts'
 import { api } from '../../services/api'
 import { Post } from './components/Post'
 import { SearchInput } from './components/SearchInput'
@@ -15,8 +16,12 @@ interface UserProps {
   html_url: string
 }
 
+const userName = import.meta.env.VITE_GITHUB_USERNAME
+const repoName = import.meta.env.VITE_GITHUB_REPONAME
+
 export function Blog() {
   const [user, setUser] = useState<UserProps>({} as UserProps)
+  const { posts, isLoading } = usePosts({ userName, repoName })
 
   const getUser = useCallback(async () => {
     const response = await api.get<UserProps>('/users/joaoeduardodias')
@@ -49,14 +54,9 @@ export function Blog() {
         <SearchInput />
       </section>
       <ListPosts>
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {posts.map((post) => (
+          <Post key={post.title} post={post} />
+        ))}
       </ListPosts>
     </BlogContainer>
   )

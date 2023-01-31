@@ -1,18 +1,24 @@
+import { Link } from 'react-router-dom'
+import { IPost } from '../../../../hooks/usePosts'
+import { CompareDateToNow } from '../../../../utils/formatter'
 import { PostContainer } from './styles'
 
-export function Post() {
+interface PostProps {
+  post: IPost
+}
+
+export function Post({ post }: PostProps) {
+  const relativeDateToNow = CompareDateToNow(post.created_at)
+
   return (
     <PostContainer>
-      <div>
-        <strong>JavaScript data types and data structures</strong>
-        <span>Há 1 dia</span>
-      </div>
-      <p>
-        Programming languages all have built-in data structures, but these often
-        differ from one language to another. This article attempts to list the
-        built-in data structures available in JavaScript and what properties
-        they have.
-      </p>
+      <Link to={`/post/${post.number}`}>
+        <div>
+          <strong>{post.title}</strong>
+          <span>{relativeDateToNow}</span>
+        </div>
+        <p>{post.body}</p>
+      </Link>
     </PostContainer>
   )
 }

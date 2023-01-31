@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '../services/api'
 
-export interface Post {
+export interface IPost {
   title: string
   body: string
   created_at: string
@@ -18,8 +18,13 @@ interface usePostsProps {
   repoName: string
 }
 
-export function usePosts({ repoName, userName }: usePostsProps) {
-  const [posts, setPosts] = useState<Post[]>([])
+interface usePost {
+  posts: IPost[]
+  isLoading: boolean
+}
+
+export function usePosts({ repoName, userName }: usePostsProps): usePost {
+  const [posts, setPosts] = useState<IPost[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
   const getPosts = useCallback(
@@ -27,7 +32,7 @@ export function usePosts({ repoName, userName }: usePostsProps) {
       try {
         setIsLoading(true)
         const response = await api.get(
-          `/search/issues?=${query}%20repo:${userName}/${repoName}`,
+          `/search/issues?q=${query}%20repo:${userName}/${repoName}`,
         )
         console.log(response.data)
         setPosts(response.data.items)
@@ -35,12 +40,12 @@ export function usePosts({ repoName, userName }: usePostsProps) {
         setIsLoading(false)
       }
     },
-    [posts, isLoading],
+    [posts],
   )
 
   useEffect(() => {
     getPosts()
   }, [])
 
-  return posts
+  return { posts, isLoading }
 }
