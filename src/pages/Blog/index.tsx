@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Info } from '../../components/Info'
+import { Spinner } from '../../components/Spinner'
 import { api } from '../../services/api'
 import { Post } from './components/Post'
 import { SearchInput } from './components/SearchInput'
@@ -80,7 +81,7 @@ export function Blog() {
       </section>
       <ListPosts>
         {isLoading ? (
-          <h3>Carregando...</h3>
+          <Spinner />
         ) : (
           posts.map((post) => <Post key={post.title} post={post} />)
         )}

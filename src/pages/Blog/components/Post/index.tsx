@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { IPost } from '../../../../hooks/usePosts'
 import { CompareDateToNow } from '../../../../utils/formatter'
+import { IPost } from '../../index'
 import { PostContainer } from './styles'
 
 interface PostProps {

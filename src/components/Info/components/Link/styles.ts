@@ -1,3 +1,4 @@
+import { Link as LinkReact } from 'react-router-dom'
 import styled from 'styled-components'
 
 export const LinkContainer = styled.div`
@@ -9,7 +10,7 @@ export const LinkContainer = styled.div`
   }
 `
 
-export const LinkContent = styled.a`
+export const LinkContent = styled(LinkReact)`
   display: flex;
   gap: 8px;
   align-items: center;

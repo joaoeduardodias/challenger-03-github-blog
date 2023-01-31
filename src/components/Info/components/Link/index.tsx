@@ -9,7 +9,7 @@ interface LinkProps {
 export function Link({ link, title }: LinkProps) {
   return (
     <LinkContainer>
-      <LinkContent href={link} target="_blank">
+      <LinkContent to={link} target="_blank">
         {link === '/' ? (
           <>
             <FaChevronLeft />
