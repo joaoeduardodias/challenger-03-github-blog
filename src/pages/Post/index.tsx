@@ -1,38 +1,80 @@
+import { useCallback, useEffect, useState } from 'react'
+import ReactMarkdown from 'react-markdown'
+import { useParams } from 'react-router-dom'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { dracula } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 import { Info } from '../../components/Info'
+import { Spinner } from '../../components/Spinner'
+import { api } from '../../services/api'
+import { CompareDateToNow } from '../../utils/formatter'
+import { IPost } from '../Blog'
 import { PostContainer } from './styles'
 
+const userName = import.meta.env.VITE_GITHUB_USERNAME
+const repoName = import.meta.env.VITE_GITHUB_REPONAME
+
 export function Post() {
+  const [isLoading, setIsLoading] = useState(true)
+  const [postData, setPostData] = useState<IPost>({} as IPost)
+
+  const { id } = useParams()
+
+  const getPostDetails = useCallback(async () => {
+    try {
+      setIsLoading(true)
+
+      const response = await api.get<IPost>(
+        `/repos/${userName}/${repoName}/issues/${id}`,
+      )
+      setPostData(response.data)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [postData])
+
+  useEffect(() => {
+    getPostDetails()
+  }, [])
+  const relativeDateToNow = CompareDateToNow(postData.created_at)
+
   return (
     <PostContainer>
       <Info
         type="repoInfo"
-        title="JavaScript data types and data structures"
-        userGit="joaoeduardodias"
-        repoLink="https://github.com/joaoeduardodias"
-        comments={5}
-        createdAt="2023-01-17T18:10:10.266Z"
+        isLoading={isLoading}
+        title={postData.title}
+        userGit={userName}
+        repoLink={postData.html_url}
+        comments={postData.comments}
+        createdAt={relativeDateToNow}
       />
-      <main>
-        <p>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn.
-        </p>
-        <h3>Dynamic typing</h3>
-        <p>
-          JavaScript is a loosely typed and dynamic language. Variables in
-          JavaScript are not directly associated with any particular value type,
-          and any variable can be assigned (and re-assigned) values of all
-          types:
-        </p>
-        <code>
-          let foo = 42; // foo is now a number foo = ‘bar’; // foo is now a
-          string foo = true; // foo is now a boolean
-        </code>
-      </main>
+      <section>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <ReactMarkdown
+            children={postData.body}
+            components={{
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '')
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, '')}
+                    style={dracula as any}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                )
+              },
+            }}
+          />
+        )}
+      </section>
     </PostContainer>
   )
 }

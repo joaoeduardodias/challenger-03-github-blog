@@ -62,6 +62,7 @@ export function Blog() {
     <BlogContainer>
       <Info
         type="userInfo"
+        isLoading={isLoading}
         title={user.name}
         description="Tristique voluteai
          pulvinar vel massa, pellentesque egestas. Eu viverra massa quam 
