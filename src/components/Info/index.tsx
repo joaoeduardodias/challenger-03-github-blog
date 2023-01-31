@@ -6,6 +6,7 @@ import {
   FaUserFriends,
 } from 'react-icons/fa'
 import { CompareDateToNow } from '../../utils/formatter'
+import { Spinner } from '../Spinner'
 import { Link } from './components/Link'
 import {
   ListInfos,
@@ -27,6 +28,7 @@ interface InfoProps {
   createdAt?: string
   comments?: number
   repoLink?: string
+  isLoading: boolean
 }
 
 export function Info({
@@ -41,55 +43,68 @@ export function Info({
   imgProfile,
   linkUserGit,
   repoLink,
+  isLoading,
 }: InfoProps) {
   return type === 'userInfo' ? (
     <UserInfoContainer>
-      <img src={imgProfile} />
-      <div>
-        <TitleContainer>
-          <strong>{title}</strong>
-          {linkUserGit && <Link link={linkUserGit} title="github" />}
-        </TitleContainer>
-        {description && <p>{description}</p>}
-        <ListInfos>
-          <li>
-            <FaGithub />
-            {userGit}
-          </li>
-          <li>
-            <FaBuilding />
-            {company}
-          </li>
-          <li>
-            <FaUserFriends />
-            {`${followers} seguidores`}
-          </li>
-        </ListInfos>
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <img src={imgProfile} />
+          <div>
+            <TitleContainer>
+              <strong>{title}</strong>
+              {linkUserGit && <Link link={linkUserGit} title="github" />}
+            </TitleContainer>
+            {description && <p>{description}</p>}
+            <ListInfos>
+              <li>
+                <FaGithub />
+                {userGit}
+              </li>
+              <li>
+                <FaBuilding />
+                {company}
+              </li>
+              <li>
+                <FaUserFriends />
+                {`${followers} seguidores`}
+              </li>
+            </ListInfos>
+          </div>
+        </>
+      )}
     </UserInfoContainer>
   ) : (
     <RepoInfoContainer>
-      <RepoTitleContainer>
-        <div>
-          <Link link="/" title="voltar" />
-          {repoLink && <Link link={repoLink} title="ver no github" />}
-        </div>
-        <strong>{title}</strong>
-      </RepoTitleContainer>
-      <ListInfos>
-        <li>
-          <FaGithub />
-          {userGit}
-        </li>
-        <li>
-          <FaCalendarDay />
-          {createdAt && CompareDateToNow(createdAt)}
-        </li>
-        <li>
-          <FaComment />
-          {`${comments} comentários`}
-        </li>
-      </ListInfos>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <RepoTitleContainer>
+            <div>
+              <Link link="/" title="voltar" />
+              {repoLink && <Link link={repoLink} title="ver no github" />}
+            </div>
+            <strong>{title}</strong>
+          </RepoTitleContainer>
+          <ListInfos>
+            <li>
+              <FaGithub />
+              {userGit}
+            </li>
+            <li>
+              <FaCalendarDay />
+              {createdAt && CompareDateToNow(createdAt)}
+            </li>
+            <li>
+              <FaComment />
+              {`${comments} comentários`}
+            </li>
+          </ListInfos>
+        </>
+      )}
     </RepoInfoContainer>
   )
 }
