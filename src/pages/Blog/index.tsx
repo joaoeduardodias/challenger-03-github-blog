@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Info } from '../../components/Info'
-import { usePosts } from '../../hooks/usePosts'
 import { api } from '../../services/api'
 import { Post } from './components/Post'
 import { SearchInput } from './components/SearchInput'
@@ -15,21 +14,47 @@ interface UserProps {
   followers: number
   html_url: string
 }
-
+export interface IPost {
+  title: string
+  body: string
+  created_at: string
+  number: number
+  html_url: string
+  comments: number
+  user: {
+    login: string
+  }
+}
 const userName = import.meta.env.VITE_GITHUB_USERNAME
 const repoName = import.meta.env.VITE_GITHUB_REPONAME
 
 export function Blog() {
   const [user, setUser] = useState<UserProps>({} as UserProps)
-  const { posts, isLoading } = usePosts({ userName, repoName })
+  const [posts, setPosts] = useState<IPost[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const getUser = useCallback(async () => {
     const response = await api.get<UserProps>('/users/joaoeduardodias')
     setUser(response.data)
   }, [])
+  const getPosts = useCallback(
+    async (query: string = '') => {
+      try {
+        setIsLoading(true)
+        const response = await api.get(
+          `/search/issues?q=${query}%20repo:${userName}/${repoName}`,
+        )
+        setPosts(response.data.items)
+      } finally {
+        setIsLoading(false)
+      }
+    },
+    [posts],
+  )
 
   useEffect(() => {
     getUser()
+    getPosts()
   }, [])
 
   return (
@@ -49,14 +74,16 @@ export function Blog() {
 
       <section>
         <header>
-          Publicações <span>6 publicações</span>
+          Publicações <span>{posts.length}</span>
         </header>
-        <SearchInput />
+        <SearchInput getPosts={getPosts} />
       </section>
       <ListPosts>
-        {posts.map((post) => (
-          <Post key={post.title} post={post} />
-        ))}
+        {isLoading ? (
+          <h3>Carregando...</h3>
+        ) : (
+          posts.map((post) => <Post key={post.title} post={post} />)
+        )}
       </ListPosts>
     </BlogContainer>
   )
